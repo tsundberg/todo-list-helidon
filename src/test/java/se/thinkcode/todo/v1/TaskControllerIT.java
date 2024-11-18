@@ -12,7 +12,6 @@ import io.helidon.webserver.testing.junit5.ServerTest;
 import io.helidon.webserver.testing.junit5.SetUpRoute;
 import org.junit.jupiter.api.Test;
 import se.thinkcode.Routes;
-import se.thinkcode.TodoList;
 
 import java.util.List;
 
@@ -34,29 +33,29 @@ public class TaskControllerIT {
 
     @Test
     void should_create_task() {
-        TaskResponse expected = new TaskResponse("Öva");
+        GetTasksResponse expected = new GetTasksResponse("Öva");
         createTask();
-        List<TaskResponse> actualTasks = getTasks();
+        List<GetTasksResponse> actualTasks = getTasks();
 
         assertThat(actualTasks).containsExactly(expected);
     }
 
     private void createTask() {
         Http1ClientRequest request = client.post("/v1/addTask");
-        TaskRequest entity = new TaskRequest("Max", "Öva");
-        ClientResponseTyped<TaskRequest> response = request.submit(entity, TaskRequest.class);
+        CreateTaskRequest entity = new CreateTaskRequest("Max", "Öva");
+        ClientResponseTyped<CreateTaskRequest> response = request.submit(entity, CreateTaskRequest.class);
 
         assertThat(response.status()).isEqualTo(Status.OK_200);
         response.close();
     }
 
-    private List<TaskResponse> getTasks() {
+    private List<GetTasksResponse> getTasks() {
         ObjectMapper mapper = new ObjectMapper();
         Http1ClientRequest request = client.get("/v1/getTasks/Max");
         try (Http1ClientResponse response = request.request()) {
             String json = response.as(String.class);
 
-            return mapper.readerForListOf(TaskResponse.class)
+            return mapper.readerForListOf(GetTasksResponse.class)
                     .readValue(json);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);

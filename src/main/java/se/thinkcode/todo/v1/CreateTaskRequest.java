@@ -3,7 +3,7 @@ package se.thinkcode.todo.v1;
 import se.thinkcode.todo.Owner;
 import se.thinkcode.todo.Task;
 
-public record TaskRequest(String owner, String todo) {
+public record CreateTaskRequest(String owner, String todo) {
     public Task toTask() {
         return new Task(todo());
     }

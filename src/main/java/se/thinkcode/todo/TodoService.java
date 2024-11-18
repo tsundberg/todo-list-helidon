@@ -10,7 +10,7 @@ public class TodoService {
         this.repository = repository;
     }
 
-    public void createTask(Task task, Owner owner) {
+    public void createTask(Owner owner, Task task) {
         repository.add(owner, task);
     }
 

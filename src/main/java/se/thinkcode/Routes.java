@@ -4,6 +4,8 @@ import io.helidon.webserver.http.HttpRouting;
 import se.thinkcode.todo.InMemoryTodoRepository;
 import se.thinkcode.todo.TodoRepository;
 import se.thinkcode.todo.TodoService;
+import se.thinkcode.todo.v1.CreateTaskController;
+import se.thinkcode.todo.v2.GetTasksController;
 
 public class Routes {
     public void routing(HttpRouting.Builder routing) {
@@ -22,19 +24,19 @@ public class Routes {
         return new TodoService(repository);
     }
 
-    private se.thinkcode.todo.v1.AddTaskController getAddTaskControllerV1(TodoService service) {
-        return new se.thinkcode.todo.v1.AddTaskController(service);
+    private CreateTaskController getAddTaskControllerV1(TodoService service) {
+        return new CreateTaskController(service);
     }
 
-    private se.thinkcode.todo.v1.GetTaskController getGetTaskControllerV1(TodoService service) {
-        return new se.thinkcode.todo.v1.GetTaskController(service);
+    private se.thinkcode.todo.v1.GetTasksController getGetTaskControllerV1(TodoService service) {
+        return new se.thinkcode.todo.v1.GetTasksController(service);
     }
 
-    private se.thinkcode.todo.v2.GetTaskController getGetTaskControllerV2(TodoService service) {
-        return new se.thinkcode.todo.v2.GetTaskController(service);
+    private GetTasksController getGetTaskControllerV2(TodoService service) {
+        return new GetTasksController(service);
     }
 
-    private se.thinkcode.todo.v2.AddTaskController getAddTaskControllerV2(TodoService service) {
-        return new se.thinkcode.todo.v2.AddTaskController(service);
+    private se.thinkcode.todo.v2.CreateTaskController getAddTaskControllerV2(TodoService service) {
+        return new se.thinkcode.todo.v2.CreateTaskController(service);
     }
 }

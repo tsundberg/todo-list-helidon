@@ -14,7 +14,7 @@ public class ServiceTest {
         Owner owner = new Owner("David");
         Task expected = new Task("Smurfa");
         Task task = new Task("Smurfa");
-        service.createTask(task, owner);
+        service.createTask(owner, task);
 
         List<Task> actual = service.getTasks(owner);
 
