@@ -5,8 +5,6 @@ import io.helidon.webserver.http.HttpRouting;
 import se.thinkcode.todo.InMemoryTodoRepository;
 import se.thinkcode.todo.TodoRepository;
 import se.thinkcode.todo.TodoService;
-import se.thinkcode.todo.v1.AddTaskController;
-import se.thinkcode.todo.v1.GetTaskController;
 
 public class TodoList {
     public static void main(String[] args) {
@@ -21,7 +19,10 @@ public class TodoList {
         TodoRepository repository = new InMemoryTodoRepository();
         TodoService service = new TodoService(repository);
 
-        routing.post("/addTask", (req, resp) -> new AddTaskController(service).handle(req, resp));
-        routing.get("/getTasks/{owner}", (req, resp) -> new GetTaskController(service).handle(req, resp));
+        routing.post("/v1/addTask", (req, resp) -> new se.thinkcode.todo.v1.AddTaskController(service).handle(req, resp));
+        routing.get("/v1/getTasks/{owner}", (req, resp) -> new se.thinkcode.todo.v1.GetTaskController(service).handle(req, resp));
+
+        routing.post("/v2/addTask", (req, resp) -> new se.thinkcode.todo.v2.AddTaskController(service).handle(req, resp));
+        routing.get("/v2/getTasks/{owner}", (req, resp) -> new se.thinkcode.todo.v2.GetTaskController(service).handle(req, resp));
     }
 }

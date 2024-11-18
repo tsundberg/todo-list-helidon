@@ -40,7 +40,7 @@ public class TaskControllerIT {
     }
 
     private void createTask() {
-        Http1ClientRequest request = client.post("/addTask");
+        Http1ClientRequest request = client.post("/v1/addTask");
         TaskRequest entity = new TaskRequest("Max", "Öva");
         ClientResponseTyped<TaskRequest> response = request.submit(entity, TaskRequest.class);
 
@@ -50,7 +50,7 @@ public class TaskControllerIT {
 
     private List<TaskResponse> getTasks() {
         ObjectMapper mapper = new ObjectMapper();
-        Http1ClientRequest request = client.get("/getTasks/Max");
+        Http1ClientRequest request = client.get("/v1/getTasks/Max");
         try (Http1ClientResponse response = request.request()) {
             String json = response.as(String.class);
 

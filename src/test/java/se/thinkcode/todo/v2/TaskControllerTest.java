@@ -1,4 +1,4 @@
-package se.thinkcode.todo.v1;
+package se.thinkcode.todo.v2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,7 +41,7 @@ public class TaskControllerTest {
     }
 
     private void createTask() {
-        Http1ClientRequest request = client.post("/v1/addTask");
+        Http1ClientRequest request = client.post("/v2/addTask");
         TaskRequest entity = new TaskRequest("Max", "Öva");
         ClientResponseTyped<TaskRequest> response = request.submit(entity, TaskRequest.class);
 
@@ -51,7 +51,7 @@ public class TaskControllerTest {
 
     private List<TaskResponse> getTasks() {
         ObjectMapper mapper = new ObjectMapper();
-        Http1ClientRequest request = client.get("/v1/getTasks/Max");
+        Http1ClientRequest request = client.get("/v2/getTasks/Max");
         try (Http1ClientResponse response = request.request()) {
             String json = response.as(String.class);
 

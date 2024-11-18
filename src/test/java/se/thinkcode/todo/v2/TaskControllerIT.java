@@ -1,4 +1,4 @@
-package se.thinkcode.todo.v1;
+package se.thinkcode.todo.v2;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,8 +8,7 @@ import io.helidon.webclient.http1.Http1Client;
 import io.helidon.webclient.http1.Http1ClientRequest;
 import io.helidon.webclient.http1.Http1ClientResponse;
 import io.helidon.webserver.http.HttpRouting;
-import io.helidon.webserver.testing.junit5.DirectClient;
-import io.helidon.webserver.testing.junit5.RoutingTest;
+import io.helidon.webserver.testing.junit5.ServerTest;
 import io.helidon.webserver.testing.junit5.SetUpRoute;
 import org.junit.jupiter.api.Test;
 import se.thinkcode.TodoList;
@@ -18,11 +17,11 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RoutingTest
-public class TaskControllerTest {
+@ServerTest
+public class TaskControllerIT {
     final Http1Client client;
 
-    TaskControllerTest(DirectClient client) {
+    TaskControllerIT(Http1Client client) {
         this.client = client;
     }
 
@@ -41,9 +40,9 @@ public class TaskControllerTest {
     }
 
     private void createTask() {
-        Http1ClientRequest request = client.post("/v1/addTask");
-        TaskRequest entity = new TaskRequest("Max", "Öva");
-        ClientResponseTyped<TaskRequest> response = request.submit(entity, TaskRequest.class);
+        Http1ClientRequest request = client.post("/v2/addTask");
+        TaskRequest taskRequest = new TaskRequest("Max", "Öva");
+        ClientResponseTyped<TaskRequest> response = request.submit(taskRequest, TaskRequest.class);
 
         assertThat(response.status()).isEqualTo(Status.OK_200);
         response.close();
@@ -51,7 +50,7 @@ public class TaskControllerTest {
 
     private List<TaskResponse> getTasks() {
         ObjectMapper mapper = new ObjectMapper();
-        Http1ClientRequest request = client.get("/v1/getTasks/Max");
+        Http1ClientRequest request = client.get("/v2/getTasks/Max");
         try (Http1ClientResponse response = request.request()) {
             String json = response.as(String.class);
 
@@ -62,3 +61,4 @@ public class TaskControllerTest {
         }
     }
 }
+
