@@ -28,7 +28,7 @@ public class TaskControllerIT {
     @SetUpRoute
     static void routing(HttpRouting.Builder builder) {
         Routes routes = new Routes();
-        routes.routing(builder);
+        routes.routes(builder);
     }
 
     @Test

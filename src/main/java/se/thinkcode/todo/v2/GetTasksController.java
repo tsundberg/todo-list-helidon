@@ -1,6 +1,7 @@
 package se.thinkcode.todo.v2;
 
 import io.helidon.common.parameters.Parameters;
+import io.helidon.webserver.http.Handler;
 import io.helidon.webserver.http.ServerRequest;
 import io.helidon.webserver.http.ServerResponse;
 import se.thinkcode.todo.Owner;
@@ -9,13 +10,14 @@ import se.thinkcode.todo.TodoService;
 
 import java.util.List;
 
-public class GetTasksController {
+public class GetTasksController implements Handler {
     private final TodoService service;
 
     public GetTasksController(TodoService service) {
         this.service = service;
     }
 
+    @Override
     public void handle(ServerRequest serverRequest, ServerResponse serverResponse) {
         Parameters parameters = serverRequest.path().pathParameters();
         String ownerName = parameters.get("owner");

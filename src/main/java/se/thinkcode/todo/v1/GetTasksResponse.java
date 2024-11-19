@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public record GetTasksResponse(String task) {
+
     public static List<GetTasksResponse> fromModel(List<Task> taskList) {
         List<GetTasksResponse> res = new ArrayList<>();
         for (Task task : taskList) {
