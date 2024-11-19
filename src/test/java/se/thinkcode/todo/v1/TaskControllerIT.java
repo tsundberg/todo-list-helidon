@@ -8,6 +8,8 @@ import io.helidon.webclient.http1.Http1Client;
 import io.helidon.webclient.http1.Http1ClientRequest;
 import io.helidon.webclient.http1.Http1ClientResponse;
 import io.helidon.webserver.http.HttpRouting;
+import io.helidon.webserver.http.ServerRequest;
+import io.helidon.webserver.http.ServerResponse;
 import io.helidon.webserver.testing.junit5.ServerTest;
 import io.helidon.webserver.testing.junit5.SetUpRoute;
 import org.junit.jupiter.api.Test;
@@ -16,9 +18,13 @@ import se.thinkcode.Routes;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 
 @ServerTest
 public class TaskControllerIT {
+    private static Routes routes;
+    private static HttpRouting.Builder builder;
     final Http1Client client;
 
     TaskControllerIT(Http1Client client) {
@@ -27,8 +33,23 @@ public class TaskControllerIT {
 
     @SetUpRoute
     static void routing(HttpRouting.Builder builder) {
-        Routes routes = new Routes();
+        TaskControllerIT.builder = builder;
+        routes = new Routes();
         routes.routes(builder);
+    }
+
+    @Test
+    void should_verify_route_using_a_mock() {
+        CreateTaskController createTaskController = mock(CreateTaskController.class);
+        routes.overrideController(createTaskController, CreateTaskController.class);
+        routes.routes(builder);
+
+        Http1ClientRequest request = client.post("/v1/addTask");
+        CreateTaskRequest entity = new CreateTaskRequest("Max", "Öva");
+
+        request.submit(entity, CreateTaskRequest.class);
+
+        verify(createTaskController).handle(any(ServerRequest.class), any(ServerResponse.class));
     }
 
     @Test
